@@ -30,14 +30,14 @@ Pasi skedari .env është i injoruar për arsye sigurie, ju duhet të krijoni nj
 ```text
 WEATHER_API_KEY=celes_i_openweathermap
 ENCRYPTION_KEY=celes_i_gjeneruar_fernet
-
+```
 4. **Si të gjeneroni çelësat?**:
 WEATHER_API_KEY: Regjistrohuni falas në https://openweathermap.org/ dhe merrni çelësin tuaj te seksioni "My API Keys".
 
 ENCRYPTION_KEY: Për të gjeneruar një çelës të vlefshëm Fernet, ekzekutoni këtë komandë në terminal:
 ```bash
 python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
-
+```
 5. **Ekzekutimi i Programit**:
 ```bash
 python main.py
