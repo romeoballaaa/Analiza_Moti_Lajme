@@ -2,27 +2,23 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_latest_news():
-    # Burimi i të dhënave (Web Scraping) [cite: 12]
     url = "https://top-channel.tv/" 
-    
-    # Përdorim korrekt i headers [cite: 17]
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-    }
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
     
     try:
-        # Trajtim i gabimeve (timeouts) [cite: 16]
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status() 
         
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        # Nxjerrje e saktë e titullit kryesor [cite: 15]
-        # Shënim: Klasa 'entry-title' është shembull, mund të ndryshojë sipas faqes
-        headline = soup.find('h2').get_text(strip=True)
+        # Provojmë të gjejmë titullin në disa vende të mundshme (fallback logic)
+        news_element = soup.find('h2') or soup.find('h1') or soup.find('a', class_='title')
         
-        return headline
+        if news_element:
+            return news_element.get_text(strip=True)
+        
+        return "Nuk u gjet asnje titull lajmi" # Trajtimi i mungesës së të dhënave
+        
     except Exception as e:
-        # Trajtim i faqeve të papritura [cite: 16]
-        print(f"Gabim gjatë scraping: {e}")
+        print(f"Gabim gjatë scraping: {e}") # Trajtimi i gabimeve
         return None
